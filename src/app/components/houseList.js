@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import HouseRow from './houseRow'
 
 const houseArray = [
@@ -14,12 +14,23 @@ const houseArray = [
     id: 2,
     address: '89 Road of Forks, Bern',
     country: 'Switzerland',
-    price: 500000,
+    price: 200000,
   },
 ]
 
 const HouseList = () => {
   const [houses, setHouses] = useState(houseArray)
+  const counter = useRef(0)
+
+  useEffect(() => {
+    const fetchHouses = async () => {
+      const response = await fetch('/api/houses')
+      const houses = await response.json()
+      setHouses(houses)
+    }
+    fetchHouses()
+    counter.current++
+  }, [])
 
   const addHouse = () => {
     setHouses([
