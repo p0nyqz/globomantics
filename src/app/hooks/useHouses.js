@@ -4,7 +4,7 @@ import useGetRequest from './useGetRequest'
 
 const useHouses = () => {
   const [houses, setHouses] = useState([])
-  const { get, loadingState } = useGetRequest('/api/houses')
+  const { get, loadingState } = useGetRequest('houses')
 
   useEffect(() => {
     const fetchHouses = async () => {
