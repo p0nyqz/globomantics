@@ -1,36 +1,15 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import loadingStatus from '../helpers/loadingStatus'
+import useHouses from '../hooks/useHouses'
 import HouseRow from './houseRow'
+import LoadingIndicator from './loadingIndicator'
 
-const houseArray = [
-  {
-    id: 1,
-    address: '12 Valey of Kings, Geneva',
-    country: 'Switzerland',
-    price: 900000,
-  },
-  {
-    id: 2,
-    address: '89 Road of Forks, Bern',
-    country: 'Switzerland',
-    price: 200000,
-  },
-]
+const HouseList = ({ selectHouse }) => {
+  const { houses, setHouses, loadingState } = useHouses()
 
-const HouseList = () => {
-  const [houses, setHouses] = useState(houseArray)
-  const counter = useRef(0)
-
-  useEffect(() => {
-    const fetchHouses = async () => {
-      const response = await fetch('/api/houses')
-      const houses = await response.json()
-      setHouses(houses)
-    }
-    fetchHouses()
-    counter.current++
-  }, [])
+  if (loadingState !== loadingStatus.loaded)
+    return <LoadingIndicator loadingState={loadingState} />
 
   const addHouse = () => {
     setHouses([
@@ -62,7 +41,7 @@ const HouseList = () => {
           </thead>
           <tbody>
             {houses.map((h) => (
-              <HouseRow key={h.id} house={h} />
+              <HouseRow key={h.id} house={h} selectHouse={selectHouse} />
             ))}
           </tbody>
         </table>
